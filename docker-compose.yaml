@@ -15,8 +15,8 @@ services:
       - "8020:8020"     # HDFS NameNode RPC for remote clients
       - "8032:8032"     # YARN ResourceManager RPC for remote clients
     volumes:
-      - cos20028lab_hadoop_namenode-data:/data/namenode
-      - cos20028lab_hadoop_master-logs:/var/log/hadoop
+      - cos20028lab_hadoop_master_data:/data/namenode
+      - cos20028lab_hadoop_master_logs:/var/log/hadoop
     mem_limit: 2g
     cpus: 1.5
     networks: [net]
@@ -29,8 +29,8 @@ services:
     hostname: hadoop-worker1
     command: ["/usr/local/bin/entrypoint-worker.sh"]
     volumes:
-      - cos20028lab_hadoop_datanode1-data:/data/datanode
-      - cos20028lab_hadoop_worker1-logs:/var/log/hadoop
+      - cos20028lab_hadoop_worker1_data:/data/datanode
+      - cos20028lab_hadoop_worker1_logs:/var/log/hadoop
     mem_limit: 1.5g
     cpus: 1.0
     networks: [net]
@@ -44,8 +44,8 @@ services:
     hostname: hadoop-worker2
     command: ["/usr/local/bin/entrypoint-worker.sh"]
     volumes:
-      - cos20028lab_hadoop_datanode2-data:/data/datanode
-      - cos20028lab_hadoop_worker2-logs:/var/log/hadoop
+      - cos20028lab_hadoop_worker2_data:/data/datanode
+      - cos20028lab_hadoop_worker2_logs:/var/log/hadoop
     mem_limit: 1.5g
     cpus: 1.0
     networks: [net]
@@ -59,22 +59,22 @@ services:
     hostname: hadoop-worker3
     command: ["/usr/local/bin/entrypoint-worker.sh"]
     volumes:
-      - cos20028lab_hadoop_datanode3-data:/data/datanode
-      - cos20028lab_hadoop_worker3-logs:/var/log/hadoop
+      - cos20028lab_hadoop_worker3_data:/data/datanode
+      - cos20028lab_hadoop_worker3_logs:/var/log/hadoop
     mem_limit: 1.5g
     cpus: 1.0
     networks: [net]
     depends_on: [hadoop-master]
 
 volumes:
-  cos20028lab_hadoop_namenode-data:
-  cos20028lab_hadoop_datanode1-data:
-  cos20028lab_hadoop_datanode2-data:
-  cos20028lab_hadoop_datanode3-data:
-  cos20028lab_hadoop_master-logs:
-  cos20028lab_hadoop_worker1-logs:
-  cos20028lab_hadoop_worker2-logs:
-  cos20028lab_hadoop_worker3-logs:
+  cos20028lab_hadoop_master_data:
+  cos20028lab_hadoop_master_logs:
+  cos20028lab_hadoop_worker1_data:
+  cos20028lab_hadoop_worker1_logs:
+  cos20028lab_hadoop_worker2_data:
+  cos20028lab_hadoop_worker2_logs:
+  cos20028lab_hadoop_worker3_data:
+  cos20028lab_hadoop_worker3_logs:
 
 networks:
   net:
