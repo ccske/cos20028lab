@@ -1,0 +1,81 @@
+name: cos20028lab
+
+services:
+  hadoop-master:
+    build:
+      context: ./hadoop
+    image: cos20028lab/hadoop:3.4.0-ubuntu24-jdk11
+    container_name: hadoop-master
+    hostname: hadoop-master
+    command: ["/usr/local/bin/entrypoint-master.sh"]
+    ports:
+      - "9870:9870"     # HDFS NameNode UI
+      - "8088:8088"     # YARN ResourceManager UI
+      - "19888:19888"   # MapReduce JobHistory Server UI
+      - "8020:8020"     # HDFS NameNode RPC for remote clients
+      - "8032:8032"     # YARN ResourceManager RPC for remote clients
+    volumes:
+      - cos20028lab_hadoop_namenode-data:/data/namenode
+      - cos20028lab_hadoop_master-logs:/var/log/hadoop
+    mem_limit: 2g
+    cpus: 1.5
+    networks: [net]
+
+  hadoop-worker1:
+    build:
+      context: ./hadoop
+    image: cos20028lab/hadoop:3.4.0-ubuntu24-jdk11
+    container_name: hadoop-worker1
+    hostname: hadoop-worker1
+    command: ["/usr/local/bin/entrypoint-worker.sh"]
+    volumes:
+      - cos20028lab_hadoop_datanode1-data:/data/datanode
+      - cos20028lab_hadoop_worker1-logs:/var/log/hadoop
+    mem_limit: 1.5g
+    cpus: 1.0
+    networks: [net]
+    depends_on: [hadoop-master]
+
+  hadoop-worker2:
+    build:
+      context: ./hadoop
+    image: cos20028lab/hadoop:3.4.0-ubuntu24-jdk11
+    container_name: hadoop-worker2
+    hostname: hadoop-worker2
+    command: ["/usr/local/bin/entrypoint-worker.sh"]
+    volumes:
+      - cos20028lab_hadoop_datanode2-data:/data/datanode
+      - cos20028lab_hadoop_worker2-logs:/var/log/hadoop
+    mem_limit: 1.5g
+    cpus: 1.0
+    networks: [net]
+    depends_on: [hadoop-master]
+
+  hadoop-worker3:
+    build:
+      context: ./hadoop
+    image: cos20028lab/hadoop:3.4.0-ubuntu24-jdk11
+    container_name: hadoop-worker3
+    hostname: hadoop-worker3
+    command: ["/usr/local/bin/entrypoint-worker.sh"]
+    volumes:
+      - cos20028lab_hadoop_datanode3-data:/data/datanode
+      - cos20028lab_hadoop_worker3-logs:/var/log/hadoop
+    mem_limit: 1.5g
+    cpus: 1.0
+    networks: [net]
+    depends_on: [hadoop-master]
+
+volumes:
+  cos20028lab_hadoop_namenode-data:
+  cos20028lab_hadoop_datanode1-data:
+  cos20028lab_hadoop_datanode2-data:
+  cos20028lab_hadoop_datanode3-data:
+  cos20028lab_hadoop_master-logs:
+  cos20028lab_hadoop_worker1-logs:
+  cos20028lab_hadoop_worker2-logs:
+  cos20028lab_hadoop_worker3-logs:
+
+networks:
+  net:
+    driver: bridge
