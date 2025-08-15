@@ -25,7 +25,7 @@ The instructions below will build the Hadoop Docker image if missing and then st
 $ cd /path/to/cos20028lab
 $ docker compose up --build -d
 ```
-After all Docker containers are up and running, you should be able to browser the Hadoop web UI:
+After all Docker containers are up and running, you should be able to browse the Hadoop web UI:
 * HDFS NameNode UI: `http://{DOCKER_HOST}:9870`
 * YARN ResourceManager UI: `http://{DOCKER_HOST}:8088`
 
