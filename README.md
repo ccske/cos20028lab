@@ -9,6 +9,7 @@ If you don't have a proper operating environment, or you would just like a test 
 $ cd /path/to/cos20028lab
 $ ./ubuntu-vm-prep.sh
 ```
+You will need to reboot the virtual machine to apply all system changes.
 
 
 ## Build Hadoop Docker image
