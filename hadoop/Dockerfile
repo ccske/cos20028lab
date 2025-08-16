@@ -9,7 +9,7 @@ ENV PATH=${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin:$PATH
 
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends openjdk-11-jdk-headless curl ca-certificates tini bash procps gosu && \
+    apt-get install -y --no-install-recommends ca-certificates curl netcat-openbsd openjdk-11-jdk-headless procps gosu tini && \
     rm -rf /var/lib/apt/lists/*
 
 RUN groupadd hadoop && useradd -g hadoop -m hadoop && \
@@ -23,7 +23,7 @@ RUN set -eux && \
       arm64)  HADOOP_TGZ="hadoop-${HADOOP_VERSION}-aarch64.tar.gz" ;; \
       *)      echo "Unsupported arch: ${TARGETARCH}"; exit 1 ;; \
     esac && \
-    curl -fSL "https://dlcdn.apache.org/hadoop/common/hadoop-${HADOOP_VERSION}/${HADOOP_TGZ}" -o /tmp/hadoop.tgz && \
+    curl -fSL "https://downloads.apache.org/hadoop/common/hadoop-${HADOOP_VERSION}/${HADOOP_TGZ}" -o /tmp/hadoop.tgz && \
     tar -xzf /tmp/hadoop.tgz -C /opt && \
     ln -s "/opt/hadoop-${HADOOP_VERSION}" ${HADOOP_HOME} && \
     rm -f /tmp/hadoop.tgz

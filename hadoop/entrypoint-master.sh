@@ -12,6 +12,15 @@ gosu hdfs bash -lc "HADOOP_LOG_DIR=/var/log/hadoop/hdfs $HADOOP_HOME/bin/hdfs --
 gosu yarn bash -lc "HADOOP_LOG_DIR=/var/log/hadoop/yarn YARN_LOG_DIR=/var/log/hadoop/yarn $HADOOP_HOME/bin/yarn --daemon start resourcemanager"
 gosu mapred bash -lc "HADOOP_LOG_DIR=/var/log/hadoop/mapred $HADOOP_HOME/bin/mapred --daemon start historyserver"
 
+for i in {1..60}; do
+    nc -z localhost 8020
+    if [[ $? -eq 0 ]]; then
+        gosu hdfs bash -lc "$HADOOP_HOME/bin/hdfs dfs -ls /user || HADOOP_LOG_DIR=/var/log/hadoop/hdfs $HADOOP_HOME/bin/hdfs dfs -mkdir /user"
+        break
+    fi
+    sleep 3
+done
+
 echo "Master services started: NameNode (hdfs), ResourceManager (yarn), HistoryServer (mapred)."
 trap 'echo "Stopping master..."; gosu mapred $HADOOP_HOME/bin/mapred --daemon stop historyserver || true; gosu yarn $HADOOP_HOME/bin/yarn --daemon stop resourcemanager || true; gosu hdfs $HADOOP_HOME/bin/hdfs --daemon stop namenode || true; exit 0' SIGTERM SIGINT
 tail -f /dev/null & wait $!
